@@ -4,8 +4,7 @@ const User = require("./models/user.js");
 
 const app = express();
 
-app.use(express.json())
-
+app.use(express.json());
 
 app.post("/signup", async (req, res) => {
   const user = new User(req?.body);
@@ -14,6 +13,33 @@ app.post("/signup", async (req, res) => {
     res.send("user added successfullly");
   } catch (e) {
     res.status(400).send("Error Saving the Error" + e.message);
+  }
+});
+
+app.get("/user", async (req, res) => {
+  const userName = req.body.firstName;
+  try {
+    const user = await User.findOne({ firstName: userName });
+    if(user.length===0){
+      res.status(404).send("No Records Found")
+    }
+    res.send(user);
+  } catch (e) {
+    res.status(400).send("something went wrong",e);
+  }
+});
+
+
+
+app.get("/feed", async (req, res) => {
+  try {
+    const user = await User.find();
+    if(user.length===0){
+      res.status(404).send("No Records Found")
+    }
+    res.send(user);
+  } catch (e) {
+    res.status(400).send("something went wrong",e);
   }
 });
 
