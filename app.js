@@ -8,6 +8,7 @@ app.use(express.json());
 
 app.post("/signup", async (req, res) => {
   const user = new User(req?.body);
+
   try {
     await user.save();
     res.send("user added successfullly");
@@ -42,6 +43,18 @@ app.get("/feed", async (req, res) => {
     res.status(400).send("something went wrong",e);
   }
 });
+
+
+app.delete("/delete",async (req,res)=>{
+  const userId=req.body.userId
+  try {
+   const user= await User.findByIdAndDelete(userId)
+      res.send("User Deleted Successfully")
+    }
+   catch (e) {
+    res.status(400).send("something went wrong",e);
+  }
+})
 
 connectDB()
   .then(() => {
