@@ -56,6 +56,19 @@ app.delete("/delete",async (req,res)=>{
   }
 })
 
+
+app.patch("/update",async (req,res)=>{
+  const userId=req.body.userId
+  const data=req.body
+  try {
+   const user= await User.findByIdAndUpdate(userId,data)
+      res.send("User updated Successfully")
+    }
+   catch (e) {
+    res.status(400).send("something went wrong",e);
+  }
+})
+
 connectDB()
   .then(() => {
     console.log("DB connected");
